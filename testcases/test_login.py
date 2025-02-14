@@ -4,7 +4,7 @@ from utilities.ReadProperties import ReadConfig
 import pytest
 
 class Test001Login:
-    baseUrl = ReadConfig.GetAplicationUrl()
+    baseUrl = ReadConfig.getbaseUrl()
     username = ReadConfig.getusername()
     password = ReadConfig.getpassword()
     logger = logGen.logger()
