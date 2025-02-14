@@ -1,6 +1,8 @@
 import pytest
 from selenium import webdriver
 from pytest_metadata.plugin import metadata_key
+import os
+
 
 @pytest.fixture()
 def setup(browser):
@@ -16,6 +18,14 @@ def setup(browser):
     else:
         driver = webdriver.Chrome()
     return driver
+
+
+@pytest.fixture(autouse=True)
+def setup_html_report_dir():
+    # Create htmlreports directory if it doesn't exist
+    reports_dir = os.path.join(os.getcwd(), 'htmlreports')
+    if not os.path.exists(reports_dir):
+        os.makedirs(reports_dir)
 
 def pytest_addoption(parser):
     parser.addoption('--browser')
