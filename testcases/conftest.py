@@ -2,6 +2,9 @@ import pytest
 from selenium import webdriver
 from pytest_metadata.plugin import metadata_key
 import os
+from collections import abc
+import collections
+
 
 
 @pytest.fixture()
@@ -26,6 +29,22 @@ def setup_html_report_dir():
     reports_dir = os.path.join(os.getcwd(), 'htmlreports')
     if not os.path.exists(reports_dir):
         os.makedirs(reports_dir)
+
+
+# Backward compatibility fix for collections.Mapping
+if not hasattr(collections, 'Mapping'):
+    collections.Mapping = abc.Mapping
+
+@pytest.fixture(autouse=True)
+def setup_reports_dir():
+    # Create Reports directory if it doesn't exist
+    reports_dir = os.path.join(os.getcwd(), 'Reports')
+    if not os.path.exists(reports_dir):
+        os.makedirs(reports_dir)
+
+@pytest.fixture(scope="session", autouse=True)
+def configure_html_report_env(request):
+    request.config.option.htmlpath = os.path.join('Reports', 'report.html')
 
 def pytest_addoption(parser):
     parser.addoption('--browser')
