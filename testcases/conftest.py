@@ -4,6 +4,9 @@ from pytest_metadata.plugin import metadata_key
 import os
 from collections import abc
 import collections
+import os
+
+from collections_fix import apply_collections_fix
 
 
 
@@ -45,6 +48,35 @@ def setup_reports_dir():
 @pytest.fixture(scope="session", autouse=True)
 def configure_html_report_env(request):
     request.config.option.htmlpath = os.path.join('Reports', 'report.html')
+
+
+
+# Apply collections fix before any tests run
+apply_collections_fix()
+
+def pytest_configure(config):
+    """
+    Pytest configuration hook to set up the test environment
+    """
+    # Create Reports directory if it doesn't exist
+    reports_dir = os.path.join(os.getcwd(), 'Reports')
+    if not os.path.exists(reports_dir):
+        os.makedirs(reports_dir)
+
+    # Configure the HTML report path
+    if not hasattr(config.option, 'htmlpath'):
+        config.option.htmlpath = os.path.join('Reports', 'report.html')
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_test_environment():
+    """
+    Setup any state specific to the execution of all tests
+    """
+    # Create Reports directory if it doesn't exist
+    reports_dir = os.path.join(os.getcwd(), 'Reports')
+    if not os.path.exists(reports_dir):
+        os.makedirs(reports_dir)
+    yield
 
 def pytest_addoption(parser):
     parser.addoption('--browser')
