@@ -6,7 +6,6 @@ from collections import abc
 import collections
 import os
 import pytest
-from collections_fix import apply_collections_fix
 
 
 
