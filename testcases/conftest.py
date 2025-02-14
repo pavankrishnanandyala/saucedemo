@@ -50,8 +50,7 @@ def configure_html_report_env(request):
 
 
 
-# Apply collections fix before any tests run
-apply_collections_fix()
+
 
 def pytest_configure(config):
     """
