@@ -2,6 +2,7 @@ from pageobjects.LoginPage import LoginPage
 from utilities.customlogger import logGen
 from utilities.ReadProperties import ReadConfig
 import pytest
+import os
 
 class Test001Login:
     baseUrl = ReadConfig.getbaseUrl()
@@ -9,6 +10,14 @@ class Test001Login:
     password = ReadConfig.getpassword()
     logger = logGen.logger()
     expected_url = "https://www.saucedemo.com/inventory.html"
+
+    def __init__(self):
+        # Ensure the Logs directory exists before initializing logger
+        log_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Logs")
+        os.makedirs(log_dir, exist_ok=True)
+
+        self.logger = logGen.logger()
+        # Rest of your initialization code...
 
     def test_pagetitle(self, setup):
         self.logger.info("*** Started Page Title Test ***")
