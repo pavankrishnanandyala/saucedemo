@@ -1,24 +1,16 @@
-# Core testing packages
+pip==25.0.1
 pytest==8.2.2
 pytest-html==4.1.1
 pytest-metadata==3.1.1
 pytest-xdist==3.6.1
-
-# Selenium and related packages
 selenium==4.22.0
 selenium-wire==5.1.0
 selenium-browser==0.0.15
 selenium-chrome==0.0.29
 selenium-page-factory==2.7
-
-# Webdriver management (removing conflicting packages)
 webdriver-manager==4.0.1
-
-# Core dependencies with fixed versions
 tqdm==4.64.0
 requests==2.32.3
 urllib3==1.26.19
 python-dotenv==1.0.1
-
-# Collections fix dependency
 typing-extensions>=4.0.0
