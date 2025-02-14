@@ -16,13 +16,13 @@ class LoginPage:
 
   def setUserName(self, username):
     self.WebDriverWait.until(EC.presence_of_element_located((By.XPATH, self.textbox_username_id)))
-    self.driver.find_element_by_xpath(self.textbox_username_id).clear()
-    self.driver.find_element_by_xpath(self.textbox_username_id).send_key(username)
+    self.driver.find_element(By.XPATH, self.textbox_username_id).clear()
+    self.driver.find_element(By.XPATH, self.textbox_username_id).send_keys(username)
 
   def setPasssword(self, password):
-    self.WebDriverWait.until(EC.presence_of_element_located((By.ID, self.textbox_password_id)))
-    self.driver.find_element_by_xpath(self.textbox_password_id).clear()
-    self.driver.find_element_by_xpath(self.textbox_password_id).send_key(password)
+    self.WebDriverWait.until(EC.presence_of_element_located((By.XPATH, self.textbox_password_id)))
+    self.driver.find_element(By.XPATH, self.textbox_password_id).clear()
+    self.driver.find_element(By.XPATH, self.textbox_password_id).send_keys(password)
 
   def clicklogin(self):
-    self.driver.find_element_by_xpath(self.login_button).click()
+    self.driver.find_element(By.XPATH, self.login_button).click()

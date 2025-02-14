@@ -1,4 +1,6 @@
 import os
+import time
+
 import pytest
 from pageobjects.LoginPage import LoginPage
 from utilities.customlogger import LogGen
@@ -54,10 +56,13 @@ class Test001Login:
 
             # Initialize page object
             self.lp = LoginPage(self.driver)
+            time.sleep(5)
 
             # Perform login steps
             self.lp.setUserName(self.username)
+            time.sleep(5)
             self.lp.setPasssword(self.password)
+            time.sleep(5)
             self.lp.clicklogin()
 
             current_url = self.driver.current_url
