@@ -1,53 +1,79 @@
-from pageobjects.LoginPage import LoginPage
-from utilities.customlogger import logGen
-from utilities.ReadProperties import ReadConfig
-import pytest
 import os
+import pytest
+from pageobjects.LoginPage import LoginPage
+from utilities.customlogger import LogGen
+from utilities.ReadProperties import ReadConfig
+
 
 class Test001Login:
+    # Class level setup
     baseUrl = ReadConfig.getbaseUrl()
     username = ReadConfig.getusername()
     password = ReadConfig.getpassword()
-    logger = logGen.logger()
     expected_url = "https://www.saucedemo.com/inventory.html"
 
-    def __init__(self):
-        # Ensure the Logs directory exists before initializing logger
-        log_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Logs")
-        os.makedirs(log_dir, exist_ok=True)
+    @pytest.fixture(autouse=True)
+    def setup_class(self):
+        # Create necessary directories
+        for directory in ["Logs", "Screenshots"]:
+            dir_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), directory)
+            os.makedirs(dir_path, exist_ok=True)
 
-        self.logger = logGen.logger()
-        # Rest of your initialization code...
+        # Initialize logger
+        self.logger = LogGen.loggen()
 
+    @pytest.mark.order(1)
     def test_pagetitle(self, setup):
+        """Test the page title of the application"""
         self.logger.info("*** Started Page Title Test ***")
-        self.driver = setup
-        self.logger.info("*** Opening the url ***")
-        self.driver.get(self.baseUrl)
+        try:
+            self.driver = setup
+            self.logger.info("*** Opening the url ***")
+            self.driver.get(self.baseUrl)
 
-        if self.driver.title == "Swag Labs":
+            actual_title = self.driver.title
+            expected_title = "Swag Labs"
+
+            assert actual_title == expected_title, f"Expected title '{expected_title}' but got '{actual_title}'"
             self.logger.info("*** Page Title Test Passed ***")
-            self.driver.close()
-            assert True
-        else:
-            self.logger.error("*** Page Title Test Failed ***")
-            self.driver.close()
-            assert False
 
+        except Exception as e:
+            self.logger.error(f"*** Page Title Test Failed: {str(e)} ***")
+            raise
+        finally:
+            if hasattr(self, 'driver'):
+                self.driver.quit()
+
+    @pytest.mark.order(2)
     def test_login(self, setup):
+        """Test the login functionality"""
         self.logger.info("*** Started Login Test ***")
-        self.driver = setup
-        self.driver.get(self.baseUrl)
-        self.lp = LoginPage(self.driver)
-        self.lp.setUserName(self.username)
-        self.lp.setPasssword(self.password)
-        self.lp.clicklogin()
-        if self.driver.current_url == self.expected_url:
+        try:
+            self.driver = setup
+            self.driver.get(self.baseUrl)
+
+            # Initialize page object
+            self.lp = LoginPage(self.driver)
+
+            # Perform login steps
+            self.lp.setUserName(self.username)
+            self.lp.setPasssword(self.password)
+            self.lp.clicklogin()
+
+            current_url = self.driver.current_url
+            assert current_url == self.expected_url, f"Expected URL '{self.expected_url}' but got '{current_url}'"
             self.logger.info("*** Login Test Passed ***")
-            self.driver.close()
-            assert True
-        else:
-            self.logger.error("*** Login Test Failed ***")
-            self.driver.save_screenshot("..\\Screenshots\\" + "test_Login.png")
-            self.driver.close()
-            assert False
+
+        except Exception as e:
+            self.logger.error(f"*** Login Test Failed: {str(e)} ***")
+            # Take screenshot on failure
+            screenshot_path = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                "Screenshots",
+                "test_login.png"
+            )
+            self.driver.save_screenshot(screenshot_path)
+            raise
+        finally:
+            if hasattr(self, 'driver'):
+                self.driver.quit()
