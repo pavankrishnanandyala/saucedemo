@@ -49,6 +49,9 @@ def pytest_metadata(metadata):
 
 
 def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "order: mark test execution order"
+    )
     config.stash[plugin.metadata_key]["Project"] = "demo"
     config.stash[plugin.metadata_key]["Module"] = "login module"
     config.stash[plugin.metadata_key]["Tester"] = "pavan krishna"

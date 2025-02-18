@@ -46,3 +46,24 @@ assert '' == 'Swag Labs'
 2025-02-14 20:18:24,968 - root - INFO - *** Started Login Test ***
 2025-02-14 20:18:42,310 - root - INFO - *** Login Test Passed ***
 2025-02-14 20:18:42,310 - root - INFO - *** Login Test Passed ***
+2025-02-18 17:09:36,362 - root - INFO - *** Started Page Title Test ***
+2025-02-18 17:09:36,362 - root - INFO - *** Opening the url ***
+2025-02-18 17:09:36,362 - root - ERROR - *** Page Title Test Failed: 'NoneType' object has no attribute 'get' ***
+2025-02-18 17:09:45,538 - root - INFO - *** Started Login Test ***
+2025-02-18 17:09:45,538 - root - INFO - *** Started Login Test ***
+2025-02-18 17:09:45,539 - root - ERROR - *** Login Test Failed: 'NoneType' object has no attribute 'get' ***
+2025-02-18 17:09:45,539 - root - ERROR - *** Login Test Failed: 'NoneType' object has no attribute 'get' ***
+2025-02-18 17:11:03,695 - root - INFO - *** Started Page Title Test ***
+2025-02-18 17:11:03,696 - root - INFO - *** Opening the url ***
+2025-02-18 17:11:03,696 - root - ERROR - *** Page Title Test Failed: 'NoneType' object has no attribute 'get' ***
+2025-02-18 17:11:12,963 - root - INFO - *** Started Login Test ***
+2025-02-18 17:11:12,963 - root - INFO - *** Started Login Test ***
+2025-02-18 17:11:12,964 - root - ERROR - *** Login Test Failed: 'NoneType' object has no attribute 'get' ***
+2025-02-18 17:11:12,964 - root - ERROR - *** Login Test Failed: 'NoneType' object has no attribute 'get' ***
+2025-02-18 17:14:16,296 - root - INFO - *** Started Page Title Test ***
+2025-02-18 17:14:16,297 - root - INFO - *** Opening the url ***
+2025-02-18 17:14:16,297 - root - ERROR - *** Page Title Test Failed: 'NoneType' object has no attribute 'get' ***
+2025-02-18 17:14:25,185 - root - INFO - *** Started Login Test ***
+2025-02-18 17:14:25,185 - root - INFO - *** Started Login Test ***
+2025-02-18 17:14:25,185 - root - ERROR - *** Login Test Failed: 'NoneType' object has no attribute 'get' ***
+2025-02-18 17:14:25,185 - root - ERROR - *** Login Test Failed: 'NoneType' object has no attribute 'get' ***
