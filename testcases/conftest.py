@@ -1,11 +1,10 @@
-import allure
+
 import pytest
 from selenium import webdriver
 from pytest_metadata import plugin
-from allure_commons.types import Severity
-import pytest
 from datetime import datetime
 from utilities.report_generator import HTMLReportGenerator
+
 
 @pytest.fixture(scope="function")
 def setup(request, browser):
@@ -37,7 +36,7 @@ def browser(request):
 
 # pytest HTML reports
 def pytest_html_report_title(report):
-    report.title = "Test Execution Report (Reclamation Application)"
+    report.title = "Test Execution Report (demo Application)"
 
 
 def pytest_metadata(metadata):
@@ -50,8 +49,8 @@ def pytest_metadata(metadata):
 
 
 def pytest_configure(config):
-    config.stash[plugin.metadata_key]["Project"] = "Reclamation"
-    config.stash[plugin.metadata_key]["Module"] = "login module,customer setup module"
+    config.stash[plugin.metadata_key]["Project"] = "demo"
+    config.stash[plugin.metadata_key]["Module"] = "login module"
     config.stash[plugin.metadata_key]["Tester"] = "pavan krishna"
 
     """Initialize test results collection."""
