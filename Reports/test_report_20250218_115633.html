@@ -1,0 +1,243 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Test Automation Report - 20250218_115633</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 20px;
+                    background-color: #f5f5f5;
+                }
+                .header {
+                    background-color: #2c3e50;
+                    color: white;
+                    padding: 20px;
+                    text-align: center;
+                    border-radius: 5px;
+                    margin-bottom: 20px;
+                }
+                .info-section {
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 5px;
+                    margin-bottom: 20px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                .results-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    background-color: white;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                .results-table th, .results-table td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                }
+                .results-table th {
+                    background-color: #34495e;
+                    color: white;
+                }
+                .passed { color: #27ae60; }
+                .failed { color: #c0392b; }
+                .skipped { color: #f39c12; }
+                .summary-box {
+                    background-color: white;
+                    padding: 15px;
+                    border-radius: 5px;
+                    margin: 10px 0;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>Test Automation Report</h1>
+            </div>
+
+            <div class="info-section">
+                <h2>Execution Information</h2>
+                <p><strong>Date and Time (UTC):</strong> 2025-02-18 11:56:33</p>
+                <p><strong>User:</strong> pavan</p>
+                <p><strong>Python Version:</strong> 3.11.4</p>
+                <p><strong>Platform:</strong> Windows-10-10.0.26100-SP0</p>
+            </div>
+
+            <div class="info-section">
+                <h2>Test Summary</h2>
+                <div class="summary-box">
+                    <p><strong>Total Tests:</strong> 2</p>
+                    <p><strong>Passed:</strong> <span class="passed">0</span></p>
+                    <p><strong>Failed:</strong> <span class="failed">2</span></p>
+                    <p><strong>Skipped:</strong> <span class="skipped">0</span></p>
+                    <p><strong>Pass Rate:</strong> 0.00%</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>Test Details</h2>
+                <table class="results-table">
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Status</th>
+                        <th>Duration (s)</th>
+                        <th>Error Message</th>
+                    </tr>
+                    
+                <tr>
+                    <td>test_pagetitle</td>
+                    <td class="failed">FAILED</td>
+                    <td>0.00</td>
+                    <td>self = <testcases.test_login.Test001Login object at 0x00000157093E92D0>, setup = None
+
+    @pytest.mark.order(1)
+    def test_pagetitle(self, setup):
+        """Test the page title of the application"""
+        self.logger.info("*** Started Page Title Test ***")
+        try:
+            self.driver = setup
+            self.logger.info("*** Opening the url ***")
+>           self.driver.get(self.baseUrl)
+E           AttributeError: 'NoneType' object has no attribute 'get'
+
+testcases\test_login.py:34: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+self = <testcases.test_login.Test001Login object at 0x00000157093E92D0>, setup = None
+
+    @pytest.mark.order(1)
+    def test_pagetitle(self, setup):
+        """Test the page title of the application"""
+        self.logger.info("*** Started Page Title Test ***")
+        try:
+            self.driver = setup
+            self.logger.info("*** Opening the url ***")
+            self.driver.get(self.baseUrl)
+    
+            actual_title = self.driver.title
+            expected_title = "Swag Labs"
+    
+            assert actual_title == expected_title, f"Expected title '{expected_title}' but got '{actual_title}'"
+            self.logger.info("*** Page Title Test Passed ***")
+    
+        except Exception as e:
+            self.logger.error(f"*** Page Title Test Failed: {str(e)} ***")
+            raise
+        finally:
+            if hasattr(self, 'driver'):
+>               self.driver.quit()
+E               AttributeError: 'NoneType' object has no attribute 'quit'
+
+testcases\test_login.py:47: AttributeError</td>
+                </tr>
+            
+                <tr>
+                    <td>test_login</td>
+                    <td class="failed">FAILED</td>
+                    <td>0.00</td>
+                    <td>self = <testcases.test_login.Test001Login object at 0x00000157094632D0>, setup = None
+
+    @pytest.mark.order(2)
+    def test_login(self, setup):
+        """Test the login functionality"""
+        self.logger.info("*** Started Login Test ***")
+        try:
+            self.driver = setup
+>           self.driver.get(self.baseUrl)
+E           AttributeError: 'NoneType' object has no attribute 'get'
+
+testcases\test_login.py:55: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+self = <testcases.test_login.Test001Login object at 0x00000157094632D0>, setup = None
+
+    @pytest.mark.order(2)
+    def test_login(self, setup):
+        """Test the login functionality"""
+        self.logger.info("*** Started Login Test ***")
+        try:
+            self.driver = setup
+            self.driver.get(self.baseUrl)
+    
+            # Initialize page object
+            self.lp = LoginPage(self.driver)
+            time.sleep(5)
+    
+            # Perform login steps
+            self.lp.setUserName(self.username)
+            time.sleep(5)
+            self.lp.setPasssword(self.password)
+            time.sleep(5)
+            self.lp.clicklogin()
+    
+            current_url = self.driver.current_url
+            assert current_url == self.expected_url, f"Expected URL '{self.expected_url}' but got '{current_url}'"
+            self.logger.info("*** Login Test Passed ***")
+    
+        except Exception as e:
+            self.logger.error(f"*** Login Test Failed: {str(e)} ***")
+            # Take screenshot on failure
+            screenshot_path = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                "Screenshots",
+                "test_login.png"
+            )
+>           self.driver.save_screenshot(screenshot_path)
+E           AttributeError: 'NoneType' object has no attribute 'save_screenshot'
+
+testcases\test_login.py:80: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+self = <testcases.test_login.Test001Login object at 0x00000157094632D0>, setup = None
+
+    @pytest.mark.order(2)
+    def test_login(self, setup):
+        """Test the login functionality"""
+        self.logger.info("*** Started Login Test ***")
+        try:
+            self.driver = setup
+            self.driver.get(self.baseUrl)
+    
+            # Initialize page object
+            self.lp = LoginPage(self.driver)
+            time.sleep(5)
+    
+            # Perform login steps
+            self.lp.setUserName(self.username)
+            time.sleep(5)
+            self.lp.setPasssword(self.password)
+            time.sleep(5)
+            self.lp.clicklogin()
+    
+            current_url = self.driver.current_url
+            assert current_url == self.expected_url, f"Expected URL '{self.expected_url}' but got '{current_url}'"
+            self.logger.info("*** Login Test Passed ***")
+    
+        except Exception as e:
+            self.logger.error(f"*** Login Test Failed: {str(e)} ***")
+            # Take screenshot on failure
+            screenshot_path = os.path.join(
+                os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                "Screenshots",
+                "test_login.png"
+            )
+            self.driver.save_screenshot(screenshot_path)
+            raise
+        finally:
+            if hasattr(self, 'driver'):
+>               self.driver.quit()
+E               AttributeError: 'NoneType' object has no attribute 'quit'
+
+testcases\test_login.py:84: AttributeError</td>
+                </tr>
+            
+                </table>
+            </div>
+        </body>
+        </html>
+        

@@ -1,3 +1,4 @@
+import logging
 import os
 import time
 
@@ -23,6 +24,7 @@ class Test001Login:
 
         # Initialize logger
         self.logger = LogGen.loggen()
+        self.logger.setLevel(logging.INFO)
 
     @pytest.mark.order(1)
     def test_pagetitle(self, setup):
@@ -50,8 +52,9 @@ class Test001Login:
     def test_login(self, setup):
         """Test the login functionality"""
         self.logger.info("*** Started Login Test ***")
+        self.driver = setup
         try:
-            self.driver = setup
+            self.logger.info("*** Opening the url ***")
             self.driver.get(self.baseUrl)
 
             # Initialize page object

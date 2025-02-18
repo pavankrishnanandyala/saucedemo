@@ -14,3 +14,4 @@ requests==2.32.3
 urllib3==1.26.19
 python-dotenv==1.0.1
 typing-extensions>=4.0.0
+allure-pytest==2.9.43
