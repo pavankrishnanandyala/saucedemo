@@ -1,16 +1,14 @@
+import allure
 import pytest
 from selenium import webdriver
-from pytest_metadata.plugin import metadata_key
-import os
-from collections import abc
-import collections
-import os
+from pytest_metadata import plugin
+from allure_commons.types import Severity
 import pytest
+from datetime import datetime
+from utilities.report_generator import HTMLReportGenerator
 
-
-
-@pytest.fixture()
-def setup(browser):
+@pytest.fixture(scope="function")
+def setup(request, browser):
     if browser == 'chrome':
         driver = webdriver.Chrome()
         print("Launching Chrome browser")
@@ -19,81 +17,93 @@ def setup(browser):
         print("Launching Firefox browser")
     elif browser == 'edge':
         driver = webdriver.Edge()
-        print("Launching Edge")
+        print("Launching Edge browser")
     else:
         driver = webdriver.Chrome()
-    return driver
+        print("Launching default Chrome browser")
 
-
-@pytest.fixture(autouse=True)
-def setup_html_report_dir():
-    # Create htmlreports directory if it doesn't exist
-    reports_dir = os.path.join(os.getcwd(), 'htmlreports')
-    if not os.path.exists(reports_dir):
-        os.makedirs(reports_dir)
-
-
-# Backward compatibility fix for collections.Mapping
-if not hasattr(collections, 'Mapping'):
-    collections.Mapping = abc.Mapping
-
-@pytest.fixture(autouse=True)
-def setup_reports_dir():
-    # Create Reports directory if it doesn't exist
-    reports_dir = os.path.join(os.getcwd(), 'Reports')
-    if not os.path.exists(reports_dir):
-        os.makedirs(reports_dir)
-
-@pytest.fixture(scope="session", autouse=True)
-def configure_html_report_env(request):
-    request.config.option.htmlpath = os.path.join('Reports', 'report.html')
-
-
-
-
-
-def pytest_configure(config):
-    """
-    Pytest configuration hook to set up the test environment
-    """
-    # Create Reports directory if it doesn't exist
-    reports_dir = os.path.join(os.getcwd(), 'Reports')
-    if not os.path.exists(reports_dir):
-        os.makedirs(reports_dir)
-
-    # Configure the HTML report path
-    if not hasattr(config.option, 'htmlpath'):
-        config.option.htmlpath = os.path.join('Reports', 'report.html')
-
-@pytest.fixture(scope="session", autouse=True)
-def setup_test_environment():
-    """
-    Setup any state specific to the execution of all tests
-    """
-    # Create Reports directory if it doesn't exist
-    reports_dir = os.path.join(os.getcwd(), 'Reports')
-    if not os.path.exists(reports_dir):
-        os.makedirs(reports_dir)
+    request.cls.driver = driver
     yield
+    driver.quit()
 
 def pytest_addoption(parser):
-    parser.addoption('--browser')
+    parser.addoption('--browser', action='store', default='chrome')
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def browser(request):
     return request.config.getoption('--browser')
 
+
+
 # pytest HTML reports
 def pytest_html_report_title(report):
-    report.title = "Test Execution Report (OpenCart)"
+    report.title = "Test Execution Report (Reclamation Application)"
 
-def pytest_configure(config):
-    config.stash[metadata_key]["Project"] = "OpenCart"
-    config.stash[metadata_key]["Module"] = "full"
-    config.stash[metadata_key]["Tester"] = "pavan"
 
 def pytest_metadata(metadata):
     metadata.pop('JAVA_HOME', None)
     metadata.pop('Plugins', None)
     metadata.pop('Packages', None)
     metadata.pop('Platform', None)
+
+
+
+
+def pytest_configure(config):
+    config.stash[plugin.metadata_key]["Project"] = "Reclamation"
+    config.stash[plugin.metadata_key]["Module"] = "login module,customer setup module"
+    config.stash[plugin.metadata_key]["Tester"] = "pavan krishna"
+
+    """Initialize test results collection."""
+    config.test_results = {
+        'total': 0,
+        'passed': 0,
+        'failed': 0,
+        'skipped': 0,
+        'details': []
+    }
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """Collect test results during test execution."""
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == "call":
+        # Get test duration
+        duration = report.duration if hasattr(report, 'duration') else 0
+
+        # Collect test results
+        test_detail = {
+            'name': item.name,
+            'status': report.outcome.upper(),
+            'duration': duration
+        }
+
+        # Add error message if test failed
+        if report.outcome == "failed":
+            test_detail['error'] = str(report.longrepr)
+
+        # Update test counts
+        item.config.test_results['total'] += 1
+        item.config.test_results[report.outcome] += 1
+        item.config.test_results['details'].append(test_detail)
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """Generate HTML report after all tests are complete."""
+    results = session.config.test_results
+
+    # Calculate pass rate
+    total = results['total']
+    if total > 0:
+        results['pass_rate'] = (results['passed'] / total) * 100
+    else:
+        results['pass_rate'] = 0
+
+    # Generate HTML report
+    report_generator = HTMLReportGenerator()
+    report_path = report_generator.generate_html_report(results)
+
+    print(f"\nHTML Report generated: {report_path}")
