@@ -4,6 +4,7 @@ from selenium import webdriver
 from pytest_metadata import plugin
 from datetime import datetime
 from utilities.report_generator import HTMLReportGenerator
+import allure
 
 
 @pytest.fixture(scope="function")
